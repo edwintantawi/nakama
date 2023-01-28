@@ -22,16 +22,31 @@ export class AICommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
-      if (message.conversation === 'clear') {
-        this.messages = [];
-        this.conn.sendMessage(message.room, { text: 'Chat context has been cleaned' }, { quoted: context });
+      if (message.conversation === '' && message.subConversation === '') {
+        this.conn.sendMessage(message.room, { text: 'Can I help you?...' }, { quoted: context });
         return;
       }
 
-      message.subConversation && this.messages.push(message.subConversation);
-      this.messages.push(message.conversation);
-      const response = await chatAI(message.conversation, this.messages.join('\n'));
-      response && this.messages.push(response);
+      if (message.conversation === 'clear') {
+        this.messages = [];
+        this.conn.sendMessage(message.room, { text: 'Chat context has been clear' }, { quoted: context });
+        return;
+      }
+
+      const ctx = message.subConversation ? `Context: ${message.subConversation}\n` : '';
+      const me = message.conversation ? `Me: ${message.conversation}\nYou: ` : 'You: ';
+
+      ctx && this.messages.push(ctx);
+      const response = await chatAI(me, this.messages.join('\n'));
+      me && this.messages.push(me);
+      response && this.messages.push(`${response}\n`);
+
+      console.log({
+        ctx,
+        me,
+        response,
+        messages: this.messages.join(''),
+      });
 
       this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
     } catch (error) {
