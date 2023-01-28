@@ -13,6 +13,7 @@ export async function chatAI(message: string, context = '') {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0.6,
+    stop: [' Me:', ' You:', ' Context:'],
   });
 
   return response.data.choices[0].text?.trim();

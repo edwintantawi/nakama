@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import { createConnection } from '~/connection';
-import { PingCommand, AICommand } from '~/commands';
+import { PingCommand, AICommand, ImageCommand } from '~/commands';
 import { Router } from '~/router';
 
 async function start() {
@@ -10,9 +10,11 @@ async function start() {
 
   const pingCommand = new PingCommand(conn);
   const aiCommand = new AICommand(conn);
+  const imageCommand = new ImageCommand(conn);
 
   router.register(pingCommand);
   router.register(aiCommand);
+  router.register(imageCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
