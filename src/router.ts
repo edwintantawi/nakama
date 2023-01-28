@@ -1,7 +1,7 @@
 import { proto } from '@adiwajshing/baileys';
 
 import { config } from '~/config';
-import { Command } from '~/commands';
+import { ChatAICommand, Command } from '~/commands';
 import { pasrseMessage } from '~/utilities';
 import { logger } from '~/logger';
 
@@ -17,7 +17,12 @@ export class Router {
     if (message.isFromMe) return;
 
     for (const command of this.commands) {
-      if (command.keywords.includes(message.command ?? '')) {
+      const allowChatAI =
+        message.quotedMessage?.isFromMe &&
+        message.quotedMessage.conversation !== '' &&
+        command instanceof ChatAICommand;
+
+      if (command.keywords.includes(message.command ?? '') || allowChatAI) {
         logger.info(
           `[${command.title}]-[${config.prefix}${message.command}]: From "${message.from}", in room: "${message.room}"`
         );

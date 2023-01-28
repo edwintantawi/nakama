@@ -1,4 +1,4 @@
 export * from './command';
 export * from './ping';
-export * from './ai';
-export * from './image';
+export * from './chat-ai';
+export * from './image-ai';

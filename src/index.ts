@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import { createConnection } from '~/connection';
-import { PingCommand, AICommand, ImageCommand } from '~/commands';
+import { PingCommand, ChatAICommand, ImageAICommand } from '~/commands';
 import { Router } from '~/router';
 
 async function start() {
@@ -9,8 +9,8 @@ async function start() {
   const router = new Router();
 
   const pingCommand = new PingCommand(conn);
-  const aiCommand = new AICommand(conn);
-  const imageCommand = new ImageCommand(conn);
+  const aiCommand = new ChatAICommand(conn);
+  const imageCommand = new ImageAICommand(conn);
 
   router.register(pingCommand);
   router.register(aiCommand);

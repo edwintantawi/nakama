@@ -6,8 +6,8 @@ import { Context, Message } from '~/types';
 import { chatAI } from '~/libs/chat';
 import { logger } from '~/logger';
 
-export class AICommand implements Command {
-  readonly title = 'AI';
+export class ChatAICommand implements Command {
+  readonly title = 'Chat AI';
   readonly keywords: string[];
   readonly usage: string;
   readonly description: string;
