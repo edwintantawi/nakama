@@ -1,4 +1,5 @@
-export const config = {
+export const config: { botId: string | undefined; prefix: string } = {
+  botId: undefined, // will be set in connection
   prefix: '!',
 };
 

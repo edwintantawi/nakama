@@ -16,4 +16,10 @@ export type Message = {
   subConversation: string;
   hasImage: boolean;
   image: proto.Message.IImageMessage | null | undefined;
+  quotedMessage?: QuotedMessage;
+};
+
+export type QuotedMessage = {
+  conversation: string;
+  isFromMe: boolean;
 };

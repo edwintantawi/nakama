@@ -6,8 +6,8 @@ import { Context, Message } from '~/types';
 import { logger } from '~/logger';
 import { imageAI } from '~/libs/image';
 
-export class ImageCommand implements Command {
-  readonly title = 'Image';
+export class ImageAICommand implements Command {
+  readonly title = 'Image AI';
   readonly keywords: string[];
   readonly usage: string;
   readonly description: string;

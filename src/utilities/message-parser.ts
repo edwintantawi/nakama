@@ -2,6 +2,7 @@ import { proto } from '@adiwajshing/baileys';
 
 import { parseCommand } from '~/utilities';
 import { Message } from '~/types';
+import { config } from '~/config';
 
 export function pasrseMessage(message: proto.IWebMessageInfo): Message {
   const text = message.message?.conversation;
@@ -34,5 +35,9 @@ export function pasrseMessage(message: proto.IWebMessageInfo): Message {
     subConversation,
     hasImage: Boolean(image),
     image: image,
+    quotedMessage: {
+      conversation: message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ?? '',
+      isFromMe: message.message?.extendedTextMessage?.contextInfo?.participant === config.botId,
+    },
   };
 }
