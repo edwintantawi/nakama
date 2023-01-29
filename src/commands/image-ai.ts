@@ -4,7 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
-import { imageAI } from '~/libs/image';
+import { imageAI } from '~/libs/openapi';
 
 export class ImageAICommand implements Command {
   readonly title = 'Image AI';

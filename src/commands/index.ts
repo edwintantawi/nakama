@@ -5,3 +5,4 @@ export * from './image-ai';
 export * from './reminder';
 export * from './waifu';
 export * from './save';
+export * from './snap';

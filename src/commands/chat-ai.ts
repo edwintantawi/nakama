@@ -3,7 +3,7 @@ import { WASocket } from '@adiwajshing/baileys';
 import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
-import { chatAI } from '~/libs/chat';
+import { chatAI } from '~/libs/openapi';
 import { logger } from '~/logger';
 
 export class ChatAICommand implements Command {
