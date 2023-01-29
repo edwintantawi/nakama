@@ -1,9 +1,5 @@
 import { openai } from '~/libs/openapi';
 
-export function addHumanChat(message: string) {
-  return `\n${message}\n`;
-}
-
 export async function chatAI(message: string, context = '') {
   const response = await openai.createCompletion({
     model: 'text-davinci-003',
