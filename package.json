@@ -49,6 +49,7 @@
   "dependencies": {
     "@adiwajshing/baileys": "github:adiwajshing/baileys",
     "@adiwajshing/keyed-db": "^0.2.4",
+    "axios": "^1.2.6",
     "dotenv": "^16.0.3",
     "node-schedule": "^2.1.1",
     "openai": "^3.1.0",
