@@ -19,9 +19,13 @@ export class SnapCommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
-      this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
+      const codeSnipped = message.conversation || message.quotedMessage?.conversation;
+      if (!codeSnipped) {
+        this.conn.sendMessage(message.room, { text: 'Invalid text...*' }, { quoted: context });
+        return;
+      }
 
-      const codeSnipped = message.conversation || message.quotedMessage?.conversation || '';
+      this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
       const result = await graphene(codeSnipped);
 
       this.conn.sendMessage(message.room, { image: result }, { quoted: context });
