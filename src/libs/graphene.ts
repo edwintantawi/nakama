@@ -3,7 +3,6 @@ import axios from 'axios';
 const ENDPOINT = 'https://graphene.teknologiumum.com/api';
 
 export async function graphene(code: string) {
-  console.log({ code });
   const result = await axios(ENDPOINT, {
     method: 'POST',
     responseType: 'arraybuffer',
