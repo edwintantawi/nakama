@@ -23,22 +23,22 @@ export class ImageAICommand implements Command {
   async execute(context: Context, message: Message) {
     try {
       if (message.conversation === '' && message.subConversation === '') {
-        this.conn.sendMessage(message.room, { text: 'Can I help you?...' }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: '*Can I help you?...*' }, { quoted: context });
         return;
       }
 
-      this.conn.sendMessage(message.room, { text: 'Wait a moment...' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
 
       const response = await imageAI(message.conversation || message.subConversation);
       if (!response) {
-        this.conn.sendMessage(message.room, { text: "I can't process it..." }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: "*I can't process it...*" }, { quoted: context });
         return;
       }
 
       this.conn.sendMessage(message.room, { image: { url: response } }, { quoted: context });
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: 'There is something wrong...' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }
 }

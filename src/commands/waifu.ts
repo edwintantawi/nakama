@@ -57,7 +57,7 @@ export class WaifuCommand implements Command {
 
       this.conn.sendMessage(
         message.room,
-        { text: isPrivate ? 'Wait a moment...\n_I will send with you in personal chat._' : 'Wait a moment...' },
+        { text: isPrivate ? '*Wait a moment...*\n_I will send with you in personal chat._' : '*Wait a moment...*' },
         { quoted: context }
       );
       const result = await waifu(keyword);
@@ -71,7 +71,7 @@ export class WaifuCommand implements Command {
         { quoted: context }
       );
     } catch (error) {
-      this.conn.sendMessage(message.room, { text: 'There is something wrong...' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }
 }
