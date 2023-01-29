@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const ENDPOINT = 'https://teknologi-umum-graphene.fly.dev/api';
+const ENDPOINT = 'https://graphene.teknologiumum.com/api';
 
 export async function graphene(code: string) {
+  console.log({ code });
   const result = await axios(ENDPOINT, {
     method: 'POST',
     responseType: 'arraybuffer',
@@ -10,7 +11,7 @@ export async function graphene(code: string) {
       'Content-Type': 'application/json',
     },
     data: {
-      code,
+      code: code,
       theme: 'dracula',
       format: 'jpeg',
       upscale: 5,

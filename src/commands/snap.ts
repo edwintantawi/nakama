@@ -12,7 +12,7 @@ export class SnapCommand implements Command {
   readonly description: string;
 
   constructor(readonly conn: WASocket) {
-    this.keywords = ['snap'];
+    this.keywords = ['snap', 'sp', 'ss'];
     this.usage = `${config.prefix}snap`;
     this.description = 'Create screenshot of code snipped';
   }
@@ -21,11 +21,11 @@ export class SnapCommand implements Command {
     try {
       this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
 
-      const result = await graphene(message.conversation || message.quotedMessage?.conversation || '');
+      const codeSnipped = message.conversation || message.quotedMessage?.conversation || '';
+      const result = await graphene(codeSnipped);
 
       this.conn.sendMessage(message.room, { image: result }, { quoted: context });
     } catch (error) {
-      console.log(error);
       this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }
