@@ -18,6 +18,7 @@ export class Router {
 
     for (const command of this.commands) {
       const allowChatAI =
+        !message.command &&
         message.quotedMessage?.isFromMe &&
         message.quotedMessage.conversation !== '' &&
         command instanceof ChatAICommand;
