@@ -12,7 +12,8 @@ export class ChatAICommand implements Command {
   readonly usage: string;
   readonly description: string;
 
-  messages: string[] = [];
+  conversationContexts: { [key: string]: string[] } = {};
+  readonly maxContext = 10;
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['ai'];
@@ -27,25 +28,33 @@ export class ChatAICommand implements Command {
         return;
       }
 
+      if (!this.conversationContexts[message.room]) {
+        this.conversationContexts[message.room] = [];
+      }
+
       if (message.conversation === 'clear') {
-        this.messages = [];
+        this.conversationContexts[message.room] = [];
         this.conn.sendMessage(message.room, { text: '*Chat context has been clear!*' }, { quoted: context });
         return;
+      }
+
+      if (this.conversationContexts[message.room].length > this.maxContext) {
+        this.conversationContexts[message.room].shift();
       }
 
       const ctx = message.subConversation ? `Context: ${message.subConversation}\n` : '';
       const me = message.conversation ? `Me: ${message.conversation}\nYou: ` : 'You: ';
 
-      ctx && this.messages.push(ctx);
-      const response = await chatAI(me, this.messages.join('\n'));
-      me && this.messages.push(me);
-      response && this.messages.push(`${response}\n`);
+      ctx && this.conversationContexts[message.room].push(ctx);
+      const response = await chatAI(me, this.conversationContexts[message.room].join('\n'));
+      me && this.conversationContexts[message.room].push(me);
+      response && this.conversationContexts[message.room].push(`${response}\n`);
 
       console.log({
         ctx,
         me,
         response,
-        messages: this.messages.join(''),
+        messages: this.conversationContexts[message.room].join(''),
       });
 
       this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
