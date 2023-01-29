@@ -24,21 +24,21 @@ export class ReminderCommand implements Command {
       const date = new Date(target);
 
       if (+date < +new Date()) {
-        this.conn.sendMessage(message.room, { text: 'The time given is invalid...' }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: '*The time given is invalid...*' }, { quoted: context });
         return;
       }
 
       schedule.scheduleJob(date, () => {
         this.conn.sendMessage(
           message.room,
-          { text: `*REMINDER!!!*\n\nNote:\n"_${note.join(' ')}_"` },
+          { text: `*REMINDER!!!*\n\nNote:\n" _${note.join(' ')}_ "` },
           { quoted: context }
         );
       });
 
-      this.conn.sendMessage(message.room, { text: 'Reminder set!' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*Reminder set!*' }, { quoted: context });
     } catch (error) {
-      this.conn.sendMessage(message.room, { text: 'There is something wrong...' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }
 }

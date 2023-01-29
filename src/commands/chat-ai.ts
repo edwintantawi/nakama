@@ -23,13 +23,13 @@ export class ChatAICommand implements Command {
   async execute(context: Context, message: Message) {
     try {
       if (message.conversation === '' && message.subConversation === '') {
-        this.conn.sendMessage(message.room, { text: 'Can I help you?...' }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: '*Can I help you?...*' }, { quoted: context });
         return;
       }
 
       if (message.conversation === 'clear') {
         this.messages = [];
-        this.conn.sendMessage(message.room, { text: 'Chat context has been clear' }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: '*Chat context has been clear!*' }, { quoted: context });
         return;
       }
 
@@ -51,7 +51,7 @@ export class ChatAICommand implements Command {
       this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: 'There is something wrong...' }, { quoted: context });
+      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }
 }

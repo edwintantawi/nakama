@@ -17,6 +17,6 @@ export class PingCommand implements Command {
   }
 
   execute(context: Context, message: Message) {
-    this.conn.sendMessage(message.room, { text: 'Pong!' }, { quoted: context });
+    this.conn.sendMessage(message.room, { text: '*Pong!*' }, { quoted: context });
   }
 }

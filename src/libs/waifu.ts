@@ -11,8 +11,8 @@ type Waifu = {
 };
 
 export async function waifuTags() {
-  const result = await axios<{ versatile: string[] }>(WAIFU_TAGS_ENDPOINT);
-  return result.data.versatile;
+  const result = await axios<{ versatile: string[]; nsfw: string[] }>(WAIFU_TAGS_ENDPOINT);
+  return result.data;
 }
 
 export async function waifu(query?: string) {

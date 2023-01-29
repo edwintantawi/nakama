@@ -19,6 +19,11 @@ export function pasrseMessage(message: proto.IWebMessageInfo): Message {
 
   const image = imageMessage || quotedImage;
 
+  const quotedMessageImageCaption =
+    message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage?.caption;
+  const quotedMessageConversation =
+    message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation || quotedMessageImageCaption || '';
+
   const { command, content: conversation } = parseCommand(textMessage);
   const { content: subConversation } = parseCommand(textContext);
 
@@ -36,7 +41,7 @@ export function pasrseMessage(message: proto.IWebMessageInfo): Message {
     hasImage: Boolean(image),
     image: image,
     quotedMessage: {
-      conversation: message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ?? '',
+      conversation: quotedMessageConversation,
       isFromMe: message.message?.extendedTextMessage?.contextInfo?.participant === config.botId,
     },
   };

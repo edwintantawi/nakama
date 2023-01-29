@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import { createConnection } from '~/connection';
-import { PingCommand, ChatAICommand, ImageAICommand, ReminderCommand, WaifuCommand } from '~/commands';
+import { PingCommand, ChatAICommand, ImageAICommand, ReminderCommand, WaifuCommand, SaveCommand } from '~/commands';
 import { Router } from '~/router';
 
 async function start() {
@@ -13,12 +13,14 @@ async function start() {
   const imageCommand = new ImageAICommand(conn);
   const reminderCommand = new ReminderCommand(conn);
   const waifuCommand = new WaifuCommand(conn);
+  const saveCommand = new SaveCommand(conn);
 
   router.register(pingCommand);
   router.register(aiCommand);
   router.register(imageCommand);
   router.register(reminderCommand);
   router.register(waifuCommand);
+  router.register(saveCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
