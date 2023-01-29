@@ -21,12 +21,12 @@ export class SnapCommand implements Command {
     try {
       const codeSnipped = message.conversation || message.quotedMessage?.conversation;
       if (!codeSnipped) {
-        this.conn.sendMessage(message.room, { text: 'Invalid text...*' }, { quoted: context });
+        this.conn.sendMessage(message.room, { text: '*Invalid text...*' }, { quoted: context });
         return;
       }
 
       this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
-      const result = await graphene(codeSnipped);
+      const result = await graphene(codeSnipped.replace(/\t/g, '    '));
 
       this.conn.sendMessage(message.room, { image: result }, { quoted: context });
     } catch (error) {
