@@ -22,6 +22,8 @@ async function start() {
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
+    console.log({ context });
+
     router.observe(context);
   });
 }

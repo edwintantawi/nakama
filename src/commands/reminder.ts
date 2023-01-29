@@ -31,7 +31,7 @@ export class ReminderCommand implements Command {
       schedule.scheduleJob(date, () => {
         this.conn.sendMessage(
           message.room,
-          { text: `*REMINDER!!!*\n\nNote:\n"_${note.join(' ')}_"` },
+          { text: `*REMINDER!!!*\n\nNote:\n" _${note.join(' ')}_ "` },
           { quoted: context }
         );
       });
