@@ -5,6 +5,7 @@ import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { getRandomJoke } from '~/libs/joke';
 import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class JokeCommand implements Command {
   readonly title = 'Joke';
@@ -20,15 +21,18 @@ export class JokeCommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
+      await setReactionStatus(this.conn, context, Status.Loading);
+
       const result = await getRandomJoke();
-      this.conn.sendMessage(
+      await this.conn.sendMessage(
         message.room,
         { text: `*Joke*\nCategory: _${result.category}_\n\n${result.joke}` },
         { quoted: context }
       );
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }

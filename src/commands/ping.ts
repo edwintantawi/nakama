@@ -4,6 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class PingCommand implements Command {
   readonly title = 'Ping';
@@ -17,12 +18,14 @@ export class PingCommand implements Command {
     this.description = 'Ping the bot and get a pong response';
   }
 
-  execute(context: Context, message: Message) {
+  async execute(context: Context, message: Message) {
     try {
-      this.conn.sendMessage(message.room, { text: '*Pong!*' }, { quoted: context });
+      await setReactionStatus(this.conn, context, Status.Loading);
+      await this.conn.sendMessage(message.room, { text: '*Pong!*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }

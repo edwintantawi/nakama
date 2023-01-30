@@ -4,6 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class SaveCommand implements Command {
   readonly title = 'Save';
@@ -19,13 +20,9 @@ export class SaveCommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
-      this.conn.sendMessage(
-        message.room,
-        { text: '*Message has been saved!*\n\n_The saved messages are in your private messages._' },
-        { quoted: context }
-      );
+      await setReactionStatus(this.conn, context, Status.Loading);
 
-      this.conn.sendMessage(
+      await this.conn.sendMessage(
         message.from,
         {
           text: `*Note:*\n${message.conversation || '-'}\n\n*Saved Message:*\n${
@@ -35,9 +32,10 @@ export class SaveCommand implements Command {
         },
         { quoted: context }
       );
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }
