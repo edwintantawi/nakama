@@ -4,6 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { graphene } from '~/libs/graphene';
+import { logger } from '~/logger';
 
 export class SnapCommand implements Command {
   readonly title = 'Snap';
@@ -30,6 +31,7 @@ export class SnapCommand implements Command {
 
       this.conn.sendMessage(message.room, { image: result }, { quoted: context });
     } catch (error) {
+      logger.error(error);
       this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }

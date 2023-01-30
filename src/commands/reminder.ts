@@ -4,6 +4,7 @@ import schedule from 'node-schedule';
 import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
+import { logger } from '~/logger';
 
 export class ReminderCommand implements Command {
   readonly title = 'Reminder';
@@ -38,6 +39,7 @@ export class ReminderCommand implements Command {
 
       this.conn.sendMessage(message.room, { text: '*Reminder set!*' }, { quoted: context });
     } catch (error) {
+      logger.error(error);
       this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }

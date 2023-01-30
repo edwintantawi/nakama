@@ -4,6 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { waifu, waifuTags } from '~/libs/waifu';
+import { logger } from '~/logger';
 
 export class WaifuCommand implements Command {
   readonly title = 'Waifu';
@@ -71,6 +72,7 @@ export class WaifuCommand implements Command {
         { quoted: context }
       );
     } catch (error) {
+      logger.error(error);
       this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
     }
   }

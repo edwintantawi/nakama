@@ -3,6 +3,7 @@ import { WASocket } from '@adiwajshing/baileys';
 import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
+import { logger } from '~/logger';
 
 export class PingCommand implements Command {
   readonly title = 'Ping';
@@ -17,6 +18,11 @@ export class PingCommand implements Command {
   }
 
   execute(context: Context, message: Message) {
-    this.conn.sendMessage(message.room, { text: '*Pong!*' }, { quoted: context });
+    try {
+      this.conn.sendMessage(message.room, { text: '*Pong!*' }, { quoted: context });
+    } catch (error) {
+      logger.error(error);
+      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+    }
   }
 }
