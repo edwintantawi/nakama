@@ -5,6 +5,7 @@ import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
 import { imageAI } from '~/libs/openapi';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class ImageAICommand implements Command {
   readonly title = 'Image AI';
@@ -22,23 +23,25 @@ export class ImageAICommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
+      await setReactionStatus(this.conn, context, Status.Loading);
+
       if (message.conversation === '' && message.subConversation === '') {
-        this.conn.sendMessage(message.room, { text: '*Can I help you?...*' }, { quoted: context });
+        await setReactionStatus(this.conn, context, Status.NotUnderstood);
+        this.conn.sendMessage(message.room, { text: '*Please provide text!*' }, { quoted: context });
         return;
       }
-
-      this.conn.sendMessage(message.room, { text: '*Wait a moment...*' }, { quoted: context });
 
       const response = await imageAI(message.conversation || message.subConversation);
       if (!response) {
-        this.conn.sendMessage(message.room, { text: "*I can't process it...*" }, { quoted: context });
+        setReactionStatus(this.conn, context, Status.Error);
         return;
       }
 
-      this.conn.sendMessage(message.room, { image: { url: response } }, { quoted: context });
+      await this.conn.sendMessage(message.room, { image: { url: response } }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }

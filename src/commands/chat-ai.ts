@@ -5,6 +5,7 @@ import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { chatAI } from '~/libs/openapi';
 import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class ChatAICommand implements Command {
   readonly title = 'Chat AI';
@@ -23,9 +24,10 @@ export class ChatAICommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
+      await setReactionStatus(this.conn, context, Status.Loading);
+
       if (message.conversation === '' && message.subConversation === '') {
-        this.conn.sendMessage(message.room, { text: '*Can I help you?...*' }, { quoted: context });
-        return;
+        message.conversation = 'hi';
       }
 
       if (!this.conversationContexts[message.room]) {
@@ -34,7 +36,7 @@ export class ChatAICommand implements Command {
 
       if (message.conversation === 'clear') {
         this.conversationContexts[message.room] = [];
-        this.conn.sendMessage(message.room, { text: '*Chat context has been clear!*' }, { quoted: context });
+        setReactionStatus(this.conn, context, Status.Success);
         return;
       }
 
@@ -57,10 +59,11 @@ export class ChatAICommand implements Command {
         messages: this.conversationContexts[message.room].join(''),
       });
 
-      this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
+      await this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }

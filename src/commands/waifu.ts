@@ -4,6 +4,8 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { waifu, waifuTags } from '~/libs/waifu';
+import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class WaifuCommand implements Command {
   readonly title = 'Waifu';
@@ -19,6 +21,8 @@ export class WaifuCommand implements Command {
 
   async execute(context: Context, message: Message) {
     try {
+      await setReactionStatus(this.conn, context, Status.Loading);
+
       const tokens = message.conversation.split(' ');
       let keyword = tokens[0];
       const option = tokens[1];
@@ -29,22 +33,24 @@ export class WaifuCommand implements Command {
       let isPrivate = false;
 
       if (keyword === 'tags') {
-        this.conn.sendMessage(
+        await this.conn.sendMessage(
           message.room,
           {
             text: `*Available tags*:\n[ _default is waifu_ ]\n\n- ${tags.versatile.join('\n- ')}`,
           },
           { quoted: context }
         );
+        setReactionStatus(this.conn, context, Status.Success);
         return;
       }
 
       const isValidTag = tags.versatile.includes(keyword) || tags.nsfw.includes(keyword);
       if (keyword && !isValidTag) {
+        await setReactionStatus(this.conn, context, Status.NotUnderstood);
         this.conn.sendMessage(
           message.room,
           {
-            text: `*Tag not valid*.\n\n_Check available tags with_: *tags*`,
+            text: `*Tag is not valid*.\n\n_Check available tags with_: *tags*`,
           },
           { quoted: context }
         );
@@ -55,13 +61,8 @@ export class WaifuCommand implements Command {
         isPrivate = true;
       }
 
-      this.conn.sendMessage(
-        message.room,
-        { text: isPrivate ? '*Wait a moment...*\n_I will send with you in personal chat._' : '*Wait a moment...*' },
-        { quoted: context }
-      );
       const result = await waifu(keyword);
-      this.conn.sendMessage(
+      await this.conn.sendMessage(
         isPrivate ? message.from : message.room,
         {
           image: { url: result.url },
@@ -70,8 +71,10 @@ export class WaifuCommand implements Command {
         },
         { quoted: context }
       );
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      logger.error(error);
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }

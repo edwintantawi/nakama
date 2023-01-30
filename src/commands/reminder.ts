@@ -4,6 +4,8 @@ import schedule from 'node-schedule';
 import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
+import { logger } from '~/logger';
+import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class ReminderCommand implements Command {
   readonly title = 'Reminder';
@@ -17,14 +19,21 @@ export class ReminderCommand implements Command {
     this.description = 'Remind you later';
   }
 
-  execute(context: Context, message: Message) {
+  async execute(context: Context, message: Message) {
     try {
+      await setReactionStatus(this.conn, context, Status.Loading);
+
       const [target, ...note] = message.conversation.split(' ');
       // '2023-01-28T14:47:23'
       const date = new Date(target);
 
       if (+date < +new Date()) {
-        this.conn.sendMessage(message.room, { text: '*The time given is invalid...*' }, { quoted: context });
+        await this.conn.sendMessage(
+          message.room,
+          { text: '*The time given must be the future time!*' },
+          { quoted: context }
+        );
+        setReactionStatus(this.conn, context, Status.Error);
         return;
       }
 
@@ -36,9 +45,10 @@ export class ReminderCommand implements Command {
         );
       });
 
-      this.conn.sendMessage(message.room, { text: '*Reminder set!*' }, { quoted: context });
+      setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
-      this.conn.sendMessage(message.room, { text: '*There is something wrong...*' }, { quoted: context });
+      logger.error(error);
+      setReactionStatus(this.conn, context, Status.Error);
     }
   }
 }
