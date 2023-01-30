@@ -9,6 +9,7 @@ import {
   WaifuCommand,
   SaveCommand,
   SnapCommand,
+  JokeCommand,
 } from '~/commands';
 import { Router } from '~/router';
 
@@ -23,6 +24,7 @@ async function start() {
   const waifuCommand = new WaifuCommand(conn);
   const saveCommand = new SaveCommand(conn);
   const snapCommand = new SnapCommand(conn);
+  const jokeCommand = new JokeCommand(conn);
 
   router.register(pingCommand);
   router.register(aiCommand);
@@ -31,6 +33,7 @@ async function start() {
   router.register(waifuCommand);
   router.register(saveCommand);
   router.register(snapCommand);
+  router.register(jokeCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
