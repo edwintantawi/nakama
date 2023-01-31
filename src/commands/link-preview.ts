@@ -8,13 +8,13 @@ import { setReactionStatus, Status } from '~/utilities/reaction-status';
 import { getLinkPreview } from '~/libs/link-preview';
 
 export class LinkPreviewCommand implements Command {
-  readonly title = 'Preview';
+  readonly title = 'Link Preview';
   readonly keywords: string[];
   readonly usage: string;
   readonly description: string;
 
   constructor(readonly conn: WASocket) {
-    this.keywords = ['preview', 'pv'];
+    this.keywords = ['link-preview', 'preview', 'pv'];
     this.usage = `${config.prefix}preview <url (not required)>`;
     this.description = 'Fetch url preview from url, also can with reply message';
   }
@@ -25,7 +25,6 @@ export class LinkPreviewCommand implements Command {
       const token = message.conversation || message.quotedMessage?.conversation || '';
       const urlRegex = /(http|https|ftp):\/\/(\S*)/;
       const url = token.match(urlRegex)?.[0];
-      console.log({ token, url });
 
       if (!url) {
         await this.conn.sendMessage(message.room, { text: '*Please provide a url!*' }, { quoted: context });
