@@ -16,7 +16,7 @@ export class ManualCommand implements Command {
     this.keywords = ['manual', 'man'];
     this.usage = `${config.prefix}manual <command keyword (not required)>`;
     this.description = 'Show the manual of the command, or show all list of command when no keyword is provided';
-    this.commands.push(this);
+    this.commands.unshift(this);
   }
 
   async execute(context: Context, message: Message) {
