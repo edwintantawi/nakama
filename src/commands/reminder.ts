@@ -15,7 +15,7 @@ export class ReminderCommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['r', 'remind'];
-    this.usage = `${config.prefix}remind`;
+    this.usage = `${config.prefix}remind <timestamp (2023-01-28T14:47:23)> <notes message (not required)>`;
     this.description = 'Remind you later';
   }
 

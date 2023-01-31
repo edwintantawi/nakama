@@ -15,7 +15,7 @@ export class SettingCommand implements Command {
   constructor(readonly conn: WASocket) {
     this.keywords = ['setting', 'st'];
     this.usage = `${config.prefix}setting`;
-    this.description = 'Setting the bot configuration';
+    this.description = 'Setting the bot configuration (owner only access)';
   }
 
   async execute(context: Context, message: Message) {

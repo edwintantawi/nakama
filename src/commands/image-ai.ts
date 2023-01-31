@@ -17,8 +17,8 @@ export class ImageAICommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['image', 'img'];
-    this.usage = `${config.prefix}image`;
-    this.description = 'Generate image with AI';
+    this.usage = `${config.prefix}image <keywords>`;
+    this.description = 'Generate images with AI based on keywords';
   }
 
   async execute(context: Context, message: Message) {

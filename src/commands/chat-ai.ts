@@ -18,8 +18,9 @@ export class ChatAICommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['ai'];
-    this.usage = `${config.prefix}ai`;
-    this.description = 'Chat with AI';
+    this.usage = `${config.prefix}ai <message>`;
+    this.description =
+      'Start a conversation with AI, you can also reply to bots without prompts to start a conversation too';
   }
 
   async execute(context: Context, message: Message) {
