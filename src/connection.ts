@@ -25,6 +25,11 @@ export async function createConnection() {
     } else if (connection === 'open') {
       config.botId = conn.authState.creds.me?.id.replace(/:[0-9]/g, '');
       logger.info('Connection ready to use');
+      let uid = 0;
+      setInterval(() => {
+        uid++;
+        conn.sendMessage(config.dumpId, { text: `connection ok [${uid}]` });
+      }, config.dumpInterval * 1000);
     }
   });
 

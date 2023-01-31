@@ -1,8 +1,17 @@
-export const config: { botId?: string; prefix: string; owner?: string; isActive: boolean } = {
+export const config: {
+  botId?: string;
+  prefix: string;
+  owner?: string;
+  isActive: boolean;
+  dumpId: string;
+  dumpInterval: number;
+} = {
   botId: undefined, // will be set in connection
+  isActive: true,
   prefix: process.env['PREFIX'] || '!',
   owner: process.env['OWNER'],
-  isActive: true,
+  dumpId: process.env['DUMP_ID'] || '',
+  dumpInterval: parseInt(process.env['DUMP_INTERVAL'] || '5'),
 };
 
 export const env = {
