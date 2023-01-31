@@ -7,3 +7,4 @@ export * from './waifu';
 export * from './save';
 export * from './snap';
 export * from './joke';
+export * from './setting';

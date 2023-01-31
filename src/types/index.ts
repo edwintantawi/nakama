@@ -9,6 +9,7 @@ export type Message = {
   id: string;
   room: string;
   isFromMe: boolean;
+  isOwner: boolean;
   from: string;
   name: string;
   timestamp: number | Long;

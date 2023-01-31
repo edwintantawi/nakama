@@ -15,6 +15,7 @@ export class Router {
   observe(context: proto.IWebMessageInfo) {
     const message = pasrseMessage(context);
     if (message.isFromMe) return;
+    if (!message.isOwner && !config.isActive) return;
 
     for (const command of this.commands) {
       const allowChatAI =

@@ -33,6 +33,7 @@ export function pasrseMessage(message: proto.IWebMessageInfo): Message {
     id: message.key.id ?? '',
     room: message.key.remoteJid ?? '',
     isFromMe: message.key.fromMe ?? false,
+    isOwner: message.key.participant?.replace('@s.whatsapp.net', '') === config.owner,
     from: message.key.participant ?? '',
     name: message.pushName ?? 'unknown',
     timestamp: message.messageTimestamp ?? +new Date(),
