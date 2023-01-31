@@ -10,7 +10,6 @@ export async function tesseract(image: Buffer, lang: Language): Promise<string> 
   const {
     data: { text },
   } = await worker.recognize(image);
-  console.log(text);
   await worker.terminate();
 
   return text;
