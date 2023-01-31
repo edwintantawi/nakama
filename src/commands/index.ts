@@ -11,3 +11,4 @@ export * from './setting';
 export * from './manual';
 export * from './image-to-text';
 export * from './link-preview';
+export * from './sticker';
