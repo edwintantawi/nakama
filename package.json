@@ -28,6 +28,7 @@
     "@types/jest": "^29.4.0",
     "@types/node": "^18.11.18",
     "@types/node-schedule": "^2.1.0",
+    "@types/sharp": "^0.31.1",
     "@types/ws": "^8.5.4",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
