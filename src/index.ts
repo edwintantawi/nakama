@@ -41,4 +41,4 @@ async function start() {
   });
 }
 
-start();
+start().catch(() => start());
