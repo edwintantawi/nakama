@@ -13,6 +13,7 @@ import {
   SettingCommand,
   ManualCommand,
   ImageToTextCommand,
+  LinkPreviewCommand,
 } from '~/commands';
 import { Router } from '~/router';
 
@@ -30,6 +31,7 @@ async function start() {
   const jokeCommand = new JokeCommand(conn);
   const settingCommand = new SettingCommand(conn);
   const imageToTextCommand = new ImageToTextCommand(conn);
+  const linkPreviewCommand = new LinkPreviewCommand(conn);
   const manualCommand = new ManualCommand(conn, [
     pingCommand,
     aiCommand,
@@ -41,6 +43,7 @@ async function start() {
     jokeCommand,
     settingCommand,
     imageToTextCommand,
+    linkPreviewCommand,
   ]);
 
   router.register(manualCommand);
@@ -54,6 +57,7 @@ async function start() {
   router.register(jokeCommand);
   router.register(settingCommand);
   router.register(imageToTextCommand);
+  router.register(linkPreviewCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
