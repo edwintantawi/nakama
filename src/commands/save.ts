@@ -14,8 +14,8 @@ export class SaveCommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['s', 'save'];
-    this.usage = `${config.prefix}save`;
-    this.description = 'Save saves the message';
+    this.usage = `${config.prefix}save <note (not required)>`;
+    this.description = 'Save the message to a private chat with the bot';
   }
 
   async execute(context: Context, message: Message) {

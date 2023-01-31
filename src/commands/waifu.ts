@@ -15,8 +15,8 @@ export class WaifuCommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['w', 'wf', 'waifu'];
-    this.usage = `${config.prefix}waifu`;
-    this.description = 'Get waifu image';
+    this.usage = `${config.prefix}waifu <tag (not required)> <once (not required) | send image for only view once>`;
+    this.description = 'Get waifu pictures';
   }
 
   async execute(context: Context, message: Message) {

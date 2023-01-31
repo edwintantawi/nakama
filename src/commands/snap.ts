@@ -15,8 +15,8 @@ export class SnapCommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['snap', 'sp', 'ss'];
-    this.usage = `${config.prefix}snap`;
-    this.description = 'Create screenshot of code snipped';
+    this.usage = `${config.prefix}snap <text (not required)>`;
+    this.description = 'Create screenshot of code snipped, you can also can use in reply message';
   }
 
   async execute(context: Context, message: Message) {
