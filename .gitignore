@@ -4,3 +4,4 @@ credentials/
 logs/**.log
 
 .env
+*.traineddata

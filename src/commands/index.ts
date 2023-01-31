@@ -9,3 +9,4 @@ export * from './snap';
 export * from './joke';
 export * from './setting';
 export * from './manual';
+export * from './image-to-text';
