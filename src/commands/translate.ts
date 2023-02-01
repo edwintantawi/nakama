@@ -57,7 +57,7 @@ export class TranslateCommand implements Command {
       await this.conn.sendMessage(
         message.room,
         {
-          text: `*Result:*\n\n*From ( _${result.detectedSourceLanguage.name}_ ):*\n${text}\n\n*To ( _${targetLanguage.name}_ ):*\n${result.translatedText}*`,
+          text: `*Result:*\n\n*From ( _${result.detectedSourceLanguage.name}_ ):*\n${text}\n\n*To ( _${targetLanguage.name}_ ):*\n${result.translatedText}`,
         },
         { quoted: context }
       );
