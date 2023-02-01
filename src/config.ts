@@ -17,4 +17,5 @@ export const config: {
 export const env = {
   OPENAI_KEY: process.env['OPENAI_KEY'],
   LINK_PREVIEW_KEY: process.env['LINK_PREVIEW_KEY'],
+  RAPID_API_KEY: process.env['RAPID_API_KEY'],
 };

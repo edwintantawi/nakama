@@ -15,6 +15,7 @@ import {
   ImageToTextCommand,
   LinkPreviewCommand,
   StickerCommand,
+  TranslateCommand,
 } from '~/commands';
 import { Router } from '~/router';
 
@@ -34,6 +35,7 @@ async function start() {
   const imageToTextCommand = new ImageToTextCommand(conn);
   const linkPreviewCommand = new LinkPreviewCommand(conn);
   const stickerCommand = new StickerCommand(conn);
+  const translateCommand = new TranslateCommand(conn);
   const manualCommand = new ManualCommand(conn, [
     pingCommand,
     aiCommand,
@@ -47,6 +49,7 @@ async function start() {
     imageToTextCommand,
     linkPreviewCommand,
     stickerCommand,
+    translateCommand,
   ]);
 
   router.register(manualCommand);
@@ -62,6 +65,7 @@ async function start() {
   router.register(imageToTextCommand);
   router.register(linkPreviewCommand);
   router.register(stickerCommand);
+  router.register(translateCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
