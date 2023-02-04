@@ -13,3 +13,4 @@ export * from './image-to-text';
 export * from './link-preview';
 export * from './sticker';
 export * from './translate';
+export * from './http-status-code';
