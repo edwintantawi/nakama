@@ -15,7 +15,7 @@ export class HTTPStatusCodeCommand implements Command {
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['http', 'status-code'];
-    this.usage = `${config.prefix}http`;
+    this.usage = `${config.prefix}http <http status code (200,201,...)>`;
     this.description = 'Get HTTP status code image';
   }
 
