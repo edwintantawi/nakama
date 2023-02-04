@@ -6,6 +6,7 @@ import { Context, Message } from '~/types';
 import { logger } from '~/logger';
 import { setReactionStatus, Status } from '~/utilities/reaction-status';
 import { getLinkPreview } from '~/libs/link-preview';
+import { extractLink } from '~/utilities/extract-link';
 
 export class LinkPreviewCommand implements Command {
   readonly title = 'Link Preview';
@@ -22,9 +23,8 @@ export class LinkPreviewCommand implements Command {
   async execute(context: Context, message: Message) {
     try {
       await setReactionStatus(this.conn, context, Status.Loading);
-      const token = message.conversation || message.quotedMessage?.conversation || '';
-      const urlRegex = /(http|https|ftp):\/\/(\S*)/;
-      const url = token.match(urlRegex)?.[0];
+      const token = message.conversation || message.subConversation || '';
+      const url = extractLink(token)[0];
 
       if (!url) {
         await this.conn.sendMessage(message.room, { text: '*Please provide a url!*' }, { quoted: context });

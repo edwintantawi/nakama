@@ -7,12 +7,7 @@ import { config } from '~/config';
 export function pasrseMessage(message: proto.IWebMessageInfo): Message {
   const text = message.message?.conversation;
   const replyText = message.message?.extendedTextMessage?.text;
-  const quotedText = message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation;
-  const quotedImageCaption = message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage?.caption;
   const imageCaption = message.message?.imageMessage?.caption;
-
-  const textMessage = text || replyText || imageCaption || '';
-  const textContext = quotedText || quotedImageCaption || '';
 
   const imageMessage = message.message?.imageMessage;
   const quotedImage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage;
@@ -22,7 +17,13 @@ export function pasrseMessage(message: proto.IWebMessageInfo): Message {
   const quotedMessageImageCaption =
     message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage?.caption;
   const quotedMessageConversation =
-    message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation || quotedMessageImageCaption || '';
+    message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.conversation ||
+    message.message?.extendedTextMessage?.contextInfo?.quotedMessage?.extendedTextMessage?.text ||
+    quotedMessageImageCaption ||
+    '';
+
+  const textMessage = text || replyText || imageCaption || '';
+  const textContext = quotedMessageConversation || quotedMessageImageCaption || '';
 
   const { command, content: conversation } = parseCommand(textMessage);
   const { content: subConversation } = parseCommand(textContext);
