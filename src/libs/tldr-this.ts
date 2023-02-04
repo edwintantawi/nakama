@@ -36,8 +36,8 @@ export async function getTLDRFromURL(url: string): Promise<TLDRArticle> {
     },
     data: {
       url,
-      min_length: 100,
-      max_length: 200,
+      min_length: 300,
+      max_length: 300,
       is_detailed: false,
     },
   });
@@ -62,8 +62,8 @@ export async function getTLDRFromText(text: string): Promise<TLDRText> {
     },
     data: {
       text,
-      min_length: 100,
-      max_length: 200,
+      min_length: 300,
+      max_length: 300,
       is_detailed: false,
     },
   });
