@@ -53,13 +53,6 @@ export class ChatAICommand implements Command {
       me && this.conversationContexts[message.room].push(me);
       response && this.conversationContexts[message.room].push(`${response}\n`);
 
-      console.log({
-        ctx,
-        me,
-        response,
-        messages: this.conversationContexts[message.room].join(''),
-      });
-
       await this.conn.sendMessage(message.room, { text: response ?? '...' }, { quoted: context });
       setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
