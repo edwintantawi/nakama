@@ -50,9 +50,10 @@ export class TLDRCommand implements Command {
       await this.conn.sendMessage(
         message.room,
         {
-          text: `*TLDR;*\n\n*Title:*\n${result.title}\n\n*Authors:*\n${result.authors.join(', ')}\n\n*Date:*\n${
+          caption: `*TLDR;*\n\n*Title:*\n${result.title}\n\n*Authors:*\n${result.authors.join(', ')}\n\n*Date:*\n${
             result.date
           }\n\n*URL:*\n${result.url}\n\n*Summary:*\n${result.summary}`,
+          image: { url: result.image },
         },
         { quoted: context }
       );
