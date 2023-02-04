@@ -5,6 +5,5 @@ const REGEX_UNDERSCORE = /^_+|_+$/g;
 export function extractLink(text: string): string[] {
   const links = text.match(REGEX_LINK) ?? [];
   const result = links.map((link) => link.replace(REGEX_UNDERSCORE, ''));
-  console.log({ links, result });
   return result;
 }

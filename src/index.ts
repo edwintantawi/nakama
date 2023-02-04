@@ -17,6 +17,7 @@ import {
   StickerCommand,
   TranslateCommand,
   HTTPStatusCodeCommand,
+  TLDRCommand,
 } from '~/commands';
 import { Router } from '~/router';
 
@@ -38,6 +39,7 @@ async function start() {
   const stickerCommand = new StickerCommand(conn);
   const translateCommand = new TranslateCommand(conn);
   const httpStatusCodeCommand = new HTTPStatusCodeCommand(conn);
+  const tldrCommand = new TLDRCommand(conn);
   const manualCommand = new ManualCommand(conn, [
     pingCommand,
     aiCommand,
@@ -53,6 +55,7 @@ async function start() {
     stickerCommand,
     translateCommand,
     httpStatusCodeCommand,
+    tldrCommand,
   ]);
 
   router.register(manualCommand);
@@ -70,6 +73,7 @@ async function start() {
   router.register(stickerCommand);
   router.register(translateCommand);
   router.register(httpStatusCodeCommand);
+  router.register(tldrCommand);
 
   conn.ev.on('messages.upsert', ({ messages }) => {
     const context = messages[0];
