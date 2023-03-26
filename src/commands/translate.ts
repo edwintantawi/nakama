@@ -5,7 +5,8 @@ import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
 import { setReactionStatus, Status } from '~/utilities/reaction-status';
-import { translate, getLanguages, Language } from '~/libs/translator';
+import { translate, Language } from '~/libs/translator';
+import { languages } from '~/utilities/translator-languages';
 
 export class TranslateCommand implements Command {
   readonly title = 'Translate';
@@ -13,17 +14,13 @@ export class TranslateCommand implements Command {
   readonly usage: string;
   readonly description: string;
 
-  languages: Language[] = [];
+  languages: Language[] = languages;
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['translate', 't'];
     this.usage = `${config.prefix}translate <target language (id|en|...)> <text (not required)>`;
     this.description =
       'Translate text to other languages, also supports auto-detecting language, and can be use as a reply to a message.';
-
-    getLanguages().then((languages) => {
-      this.languages = languages;
-    });
   }
 
   async execute(context: Context, message: Message) {
