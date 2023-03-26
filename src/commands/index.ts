@@ -15,3 +15,5 @@ export * from './sticker';
 export * from './translate';
 export * from './http-status-code';
 export * from './tldr';
+export * from './chat-ai';
+export * from './chat-ai-legacy';

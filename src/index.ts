@@ -18,6 +18,7 @@ import {
   TranslateCommand,
   HTTPStatusCodeCommand,
   TLDRCommand,
+  ChatAILegacyCommand,
 } from '~/commands';
 import { Router } from '~/router';
 
@@ -40,9 +41,11 @@ async function start() {
   const translateCommand = new TranslateCommand(conn);
   const httpStatusCodeCommand = new HTTPStatusCodeCommand(conn);
   const tldrCommand = new TLDRCommand(conn);
+  const aiLegacyCommand = new ChatAILegacyCommand(conn);
   const manualCommand = new ManualCommand(conn, [
     pingCommand,
     aiCommand,
+    aiLegacyCommand,
     imageCommand,
     reminderCommand,
     waifuCommand,
@@ -61,6 +64,7 @@ async function start() {
   router.register(manualCommand);
   router.register(pingCommand);
   router.register(aiCommand);
+  router.register(aiLegacyCommand);
   router.register(imageCommand);
   router.register(reminderCommand);
   router.register(waifuCommand);
