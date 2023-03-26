@@ -8,5 +8,6 @@ export interface Command {
   readonly usage: string;
   readonly description: string;
   readonly keywords: string[];
+  readonly trigger?: string;
   readonly execute: (context: Context, message: Message) => void;
 }

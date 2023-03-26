@@ -1,26 +1,25 @@
 import { WASocket } from '@adiwajshing/baileys';
-import { ChatCompletionRequestMessage } from 'openai';
 
 import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
-import { chatAI } from '~/libs/open-ai';
+import { completionAI } from '~/libs/open-ai';
 import { logger } from '~/logger';
 import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
-export class ChatAICommand implements Command {
-  readonly title = 'Chat AI';
+export class ChatAILegacyCommand implements Command {
+  readonly title = 'Chat AI Legacy';
   readonly keywords: string[];
   readonly usage: string;
   readonly description: string;
-  readonly trigger = '‎‎';
+  readonly trigger = '‎';
 
-  conversationContexts: { [key: string]: ChatCompletionRequestMessage[] } = {};
+  conversationContexts: { [key: string]: string[] } = {};
   readonly maxContext = 10;
 
   constructor(readonly conn: WASocket) {
-    this.keywords = ['ai'];
-    this.usage = `${config.prefix}ai <message>`;
+    this.keywords = ['ail'];
+    this.usage = `${config.prefix}ail <message>`;
     this.description =
       'Start a conversation with AI, you can also reply to bots without prompts to start a conversation too';
   }
@@ -47,24 +46,15 @@ export class ChatAICommand implements Command {
         this.conversationContexts[message.room].shift();
       }
 
-      const isAlreadyExist = this.conversationContexts[message.room].find((m) => {
-        return m.content === message.subConversation;
-      });
-      const ctx: ChatCompletionRequestMessage | null = !isAlreadyExist
-        ? { role: 'assistant', content: message.subConversation }
-        : null;
-      const me: ChatCompletionRequestMessage = { role: 'user', content: message.conversation };
+      const ctx = message.subConversation ? `Context: ${message.subConversation}\n` : '';
+      const me = message.conversation ? `Me: ${message.conversation}\nYou: ` : 'You: ';
 
       ctx && this.conversationContexts[message.room].push(ctx);
-      this.conversationContexts[message.room].push(me);
-      const response = await chatAI(this.conversationContexts[message.room]);
-      response && this.conversationContexts[message.room].push(response);
+      const response = await completionAI(me, this.conversationContexts[message.room].join('\n'));
+      me && this.conversationContexts[message.room].push(me);
+      response && this.conversationContexts[message.room].push(`${response}\n`);
 
-      await this.conn.sendMessage(
-        message.room,
-        { text: `${this.trigger}${response?.content}` ?? '...' },
-        { quoted: context }
-      );
+      await this.conn.sendMessage(message.room, { text: `${this.trigger}${response}` ?? '...' }, { quoted: context });
       setReactionStatus(this.conn, context, Status.Success);
     } catch (error) {
       logger.error(error);

@@ -4,7 +4,7 @@ import { config } from '~/config';
 import { Command } from '~/commands';
 import { Context, Message } from '~/types';
 import { logger } from '~/logger';
-import { imageAI } from '~/libs/openapi';
+import { imageAI } from '~/libs/open-ai';
 import { setReactionStatus, Status } from '~/utilities/reaction-status';
 
 export class ImageAICommand implements Command {

@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
 
 import { env } from '~/config';
 
@@ -8,7 +8,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-export async function chatAI(message: string, context = '') {
+export async function completionAI(message: string, context = '') {
   const response = await openai.createCompletion({
     model: 'text-davinci-003',
     prompt: context + message,
@@ -31,4 +31,15 @@ export async function imageAI(message: string) {
   });
   const image_url = response.data.data[0].url;
   return image_url;
+}
+
+export async function chatAI(messages: Array<ChatCompletionRequestMessage>) {
+  const response = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages,
+    temperature: 0.5,
+    n: 1,
+  });
+
+  return response.data.choices[0].message;
 }
