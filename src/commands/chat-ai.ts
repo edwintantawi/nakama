@@ -48,12 +48,19 @@ export class ChatAICommand implements Command {
       }
 
       const isAlreadyExist = this.conversationContexts[message.room].find((m) => {
-        return m.content === message.subConversation;
+        return m.content === message.quotedMessage?.conversation.replace(this.trigger, '');
       });
-      const ctx: ChatCompletionRequestMessage | null = !isAlreadyExist
-        ? { role: 'assistant', content: message.subConversation }
-        : null;
-      const me: ChatCompletionRequestMessage = { role: 'user', content: message.conversation };
+
+      const ctx: ChatCompletionRequestMessage | null =
+        !isAlreadyExist && message.quotedMessage?.conversation
+          ? { role: 'system', content: message.quotedMessage?.conversation }
+          : null;
+
+      const me: ChatCompletionRequestMessage = {
+        role: 'user',
+        content: message.conversation,
+        name: `${message.from.replace('@s.whatsapp.net', '')}`,
+      };
 
       ctx && this.conversationContexts[message.room].push(ctx);
       this.conversationContexts[message.room].push(me);
