@@ -20,7 +20,7 @@ export class ImageToTextCommand implements Command {
   readonly usage: string;
   readonly description: string;
 
-  readonly supportedLanguages = ['en', 'id', 'ch-s', 'ch-t'];
+  readonly supportedLanguages = ['en', 'id', 'ch-s', 'ch-t', 'jpn'];
 
   constructor(readonly conn: WASocket) {
     this.keywords = ['itot', 'image-to-text'];
