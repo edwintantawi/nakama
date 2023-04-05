@@ -12,6 +12,7 @@ const languageMapping: { [key: string]: Language } = {
   en: 'eng',
   'ch-s': 'chi_sim',
   'ch-t': 'chi_tra',
+  jpn: 'jpn',
 };
 
 export class ImageToTextCommand implements Command {
